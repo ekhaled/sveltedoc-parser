@@ -228,78 +228,84 @@ describe('SvelteDoc v3 - Props', () => {
 
             expect(data0.name).to.equal('add');
             expect(data0.type.type).to.equal('function');
+            expect(data0.type.kind).to.equal('function');
+            expect(data0.type.params, 'Function expression arguments should be parsed').to.exist;
             expect(data0.description).to.equal('Adds two numbers `a` and `b`');
-            expect(data0.params, 'Function expression arguments should be parsed').to.exist;
 
-            const data0params0 = data0.params[0];
+            const data0params0 = data0.type.params[0];
+
             expect(data0params0.name).to.equal('a');
             expect(data0params0.description).to.be.null;
             expect(data0params0.type.type).to.equal('number');
             expect(data0params0.defaultValue).to.equal('0');
             expect(data0params0.optional).to.be.true;
 
-            const data0params1 = data0.params[1];
+            const data0params1 = data0.type.params[1];
+
             expect(data0params1.name).to.equal('b');
             expect(data0params1.description).to.be.null;
             expect(data0params1.type.type).to.equal('number');
             expect(data0params1.defaultValue).to.equal('0');
             expect(data0params1.optional).to.be.true;
 
-
             expect(data1.name).to.equal('subtract');
             expect(data1.type.type).to.equal('function');
+            expect(data1.type.kind).to.equal('function');
+            expect(data1.type.params, 'Function expression arguments should be parsed').to.exist;
             expect(data1.description).to.equal('Subtracts two numbers `b` from `a`');
-            expect(data1.params, 'Function expression arguments should be parsed').to.exist;
 
-            const data1params0 = data1.params[0];
+            const data1params0 = data1.type.params[0];
+
             expect(data1params0.name).to.equal('a');
             expect(data1params0.description).to.equal('first number');
             expect(data1params0.type.type).to.equal('number');
             expect(data1params0.defaultValue).to.be.undefined;
             expect(data1params0.optional).to.be.false;
 
-            const data1params1 = data1.params[1];
+            const data1params1 = data1.type.params[1];
+
             expect(data1params1.name).to.equal('b');
             expect(data1params1.description).to.equal('second number');
             expect(data1params1.type.type).to.equal('number');
             expect(data1params1.defaultValue).to.equal('0');
             expect(data1params1.optional).to.be.true;
 
-            expect(data1.return, 'function expression return keyword should be parsed').to.exist;
-            expect(data1.return.type).to.exist;
-            expect(data1.return.type.type).to.equal('number');
-            expect(data1.return.description).to.equal('the difference');
+            expect(data1.type.return, 'function expression return keyword should be parsed').to.exist;
+            expect(data1.type.return.type).to.exist;
+            expect(data1.type.return.type.type).to.equal('number');
+            expect(data1.type.return.description).to.equal('the difference');
 
             expect(data2.name).to.equal('multiply');
             expect(data2.type.type).to.equal('function');
+            expect(data2.type.params, 'Function expression arguments should be parsed').to.exist;
             expect(data2.description).to.equal('Multiplies two numbers `a` and `b`');
-            expect(data2.params, 'Function expression arguments should be parsed').to.exist;
 
-            const data2params0 = data2.params[0];
+            const data2params0 = data2.type.params[0];
+
             expect(data2params0.name).to.equal('a');
             expect(data2params0.description).to.equal('first number');
             expect(data2params0.type.type).to.equal('number');
             expect(data2params0.defaultValue).to.equal('0');
             expect(data2params0.optional).to.be.true;
 
-            const data2params1 = data2.params[1];
+            const data2params1 = data2.type.params[1];
+
             expect(data2params1.name).to.equal('b');
             expect(data2params1.description).to.equal('second number');
             expect(data2params1.type.type).to.equal('number');
             expect(data2params1.defaultValue).to.equal('1');
             expect(data2params1.optional).to.be.true;
 
-            expect(data2.return, 'function expression return keyword should be parsed').to.exist;
-            expect(data2.return.type).to.exist;
-            expect(data2.return.type.type).to.equal('number');
-            expect(data2.return.description).to.equal('the total');
-
+            expect(data2.type.return, 'function expression return keyword should be parsed').to.exist;
+            expect(data2.type.return.type).to.exist;
+            expect(data2.type.return.type.type).to.equal('number');
+            expect(data2.type.return.description).to.equal('the total');
 
             expect(data3.name).to.equal('done');
             expect(data3.type.type).to.equal('function');
+            expect(data3.type.kind).to.equal('function');
+            expect(data3.type.params).to.not.exist;
             expect(data3.description).to.be.null;
-            expect(data3.params).to.not.exist;
-
 
             done();
         }).catch(e => {
@@ -323,7 +329,7 @@ describe('SvelteDoc v3 - Props', () => {
 
             expect(prop.name).to.equal('x');
             expect(prop.originalName).to.equal('x');
-            expect(prop.importPath).to.equal('./importable.js');
+            expect(prop.importPath).to.equal('./const.importable.js');
             expect(prop.visibility).to.equal('private');
             expect(prop.static).to.be.false;
 
@@ -355,7 +361,7 @@ describe('SvelteDoc v3 - Props', () => {
 
             expect(prop.name).to.equal('altY');
             expect(prop.originalName).to.equal('y');
-            expect(prop.importPath).to.equal('./importable.js');
+            expect(prop.importPath).to.equal('./const.importable.js');
             expect(prop.visibility).to.equal('private');
             expect(prop.static).to.be.false;
 
@@ -534,10 +540,11 @@ describe('SvelteDoc v3 - Props', () => {
             expect(localProp, 'Local prop definition also must be provided').to.exist;
 
             const prop2 = doc.data.find(d => d.name === 'switch');
+
             expect(prop2).to.exist;
             expect(prop2.name, 'Aliace name must be exposed instead of original name').to.equal('switch');
             expect(prop2.localName, 'Local name must be stored').to.equal('switchValue');
-            expect(prop2.defaultValue).to.equal("main");
+            expect(prop2.defaultValue).to.equal('main');
             expect(prop2.keywords).to.exist;
             expect(prop2.keywords.length).to.equal(1);
 
